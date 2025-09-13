@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: small global tweaks */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { @apply text-slate-900; }
