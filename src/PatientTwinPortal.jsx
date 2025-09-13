@@ -816,26 +816,60 @@ export default function PatientTwinPortal() {
                 </TabsContent>
 
                 <TabsContent value="medslog" className="space-y-3 mt-3">
-                  <div className="text-xs text-gray-500">Dose-level events last 7–10 days; source-weighted confidence.</div>
-                  <div className="max-h-60 overflow-auto">
-                    <div className="grid grid-cols-6 text-[11px] font-medium text-gray-500 px-2 py-1">
-                      <div>Medication</div><div>Scheduled</div><div>Taken</div><div>Status</div><div>Source</div><div>Conf</div>
+                  <div className="text-xs text-gray-500">
+                     Dose-level events last 7–10 days; source-weighted confidence.
+                  </div>
+
+                  {/* horizontal scroll if needed */}
+                  <div className="max-h-60 overflow-auto pr-1">
+                    <div className="min-w-[720px]"> {/* prevent too-narrow squeeze */}
+                      {/* Header */}
+                      <div
+                        className="
+                          sticky top-0 z-10 bg-white
+                          grid gap-x-3 px-2 py-2 border-b text-[11px] font-medium text-gray-600
+                          [grid-template-columns:minmax(10rem,1.6fr)_minmax(9rem,1fr)_minmax(9rem,1fr)_minmax(6rem,0.8fr)_minmax(6rem,0.8fr)_minmax(4rem,0.6fr)]
+                        "
+                      >
+                        <div>Medication</div>
+                        <div>Scheduled</div>
+                        <div>Taken</div>
+                        <div>Status</div>
+                        <div>Source</div>
+                        <div>Conf</div>
+                      </div>
+
+                      {/* Rows */}
+                      {medsLog.map((d) => {
+                        const med = DUMMY_PATIENT.meds.find((m) => m.id === d.medId);
+                        return (
+                          <div
+                            key={d.id}
+                            className="
+                              grid items-center gap-x-3 px-2 py-2 border-b text-sm bg-white
+                              [grid-template-columns:minmax(10rem,1.6fr)_minmax(9rem,1fr)_minmax(9rem,1fr)_minmax(6rem,0.8fr)_minmax(6rem,0.8fr)_minmax(4rem,0.6fr)]
+                            "
+                          >
+                            <div className="truncate">{med?.name}</div>
+
+                            <div className="font-mono text-[12px] whitespace-nowrap">{d.scheduledAt}</div>
+                            <div className="font-mono text-[12px] whitespace-nowrap">{d.takenAt || "—"}</div>
+
+                            <div>
+                              <span className="inline-flex items-center rounded-full bg-gray-100 text-gray-700 text-[10px] px-2 py-0.5 capitalize">
+                                {d.state.replace("_", " ")}
+                              </span>
+                            </div>
+
+                            <div className="text-xs">{d.source}</div>
+                            <div className="text-xs">{Math.round(d.confidence * 100)}%</div>
+                          </div>
+                        );
+                      })}
                     </div>
-                    {medsLog.map((d) => {
-                      const med = DUMMY_PATIENT.meds.find((m) => m.id === d.medId);
-                      return (
-                        <div key={d.id} className="grid grid-cols-6 items-center text-sm px-2 py-2 border-t">
-                          <div className="truncate">{med?.name}</div>
-                          <div>{d.scheduledAt}</div>
-                          <div>{d.takenAt || "—"}</div>
-                          <div><Badge className="rounded-full" variant="secondary">{d.state}</Badge></div>
-                          <div className="text-xs">{d.source}</div>
-                          <div className="text-xs">{Math.round(d.confidence * 100)}%</div>
-                        </div>
-                      );
-                    })}
                   </div>
                 </TabsContent>
+
               </Tabs>
             </CardContent>
           </Card>
