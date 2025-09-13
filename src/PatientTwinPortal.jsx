@@ -39,6 +39,9 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+// Small helper to extract initials from a name
+const getInitials = (name) =>
+  name.split(' ').map(p => p[0]).join('').slice(0,2).toUpperCase();
 
 /*****************************
  * Minimal UI Primitives (local) – with collapsible Card & accents
@@ -190,8 +193,8 @@ const DUMMY_PATIENT = {
   name: "Aarav Mehta",
   age: 56,
   sex: "Male",
-  avatar:
-    "https://images.unsplash.com/photo-1609171438301-4321a5d2fae2?q=80&w=512&auto=format&fit=crop",
+  //avatar:
+    //"https://images.unsplash.com/photo-1609171438301-4321a5d2fae2?q=80&w=512&auto=format&fit=crop",
   bloodGroup: "B+",
   location: "Gurugram, IN",
   caregivers: [
@@ -448,8 +451,7 @@ export default function PatientTwinPortal() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="h-11 w-11 ring-2 ring-indigo-200">
-              <AvatarImage src={DUMMY_PATIENT.avatar} alt={DUMMY_PATIENT.name} />
-              <AvatarFallback>AM</AvatarFallback>
+              <AvatarFallback>{getInitials(DUMMY_PATIENT.name)}</AvatarFallback>
             </Avatar>
             <div>
               <div className="flex items-center gap-2">
